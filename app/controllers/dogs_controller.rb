@@ -10,6 +10,9 @@ class DogsController < ApplicationController
       @dogs = Dog.all.select{|d| d.age < 5 }
     elsif params[:pictures]
       @dogs = Dog.all.select{|d| !(d.picture_url.blank?) }
+    elsif params[:breed_id]
+      @breed = Breed.find(params[:breed_id])
+      @dogs = @breed.dogs
     else
       @dogs = Dog.all
     end
@@ -70,13 +73,13 @@ class DogsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_dog
-      @dog = Dog.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_dog
+    @dog = Dog.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def dog_params
-      params.require(:dog).permit(:name, :age, :picture)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def dog_params
+    params.require(:dog).permit(:name, :age, :picture, :breed_id)
+  end
 end
